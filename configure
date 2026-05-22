@@ -738,6 +738,7 @@ ICPX
 HIPCC
 NVCC
 KOKKOS_CXXFLAGS
+KOKKOS_SOURCE_LANG
 VEXCL_ENABLED_FALSE
 VEXCL_ENABLED_TRUE
 HAVE_VEXCL
@@ -40946,6 +40947,7 @@ then :
     KOKKOS_CPPFLAGS="-DMETAPHYSICL_KOKKOS_COMPILATION -I$KOKKOS_PREFIX/include"
     KOKKOS_LDFLAGS="-L$KOKKOS_PREFIX/lib -Wl,-rpath,$KOKKOS_PREFIX/lib"
     KOKKOS_LIBS="-lkokkoscore"
+    KOKKOS_SOURCE_LANG="c++"
 
     KOKKOS_CFG="$KOKKOS_PREFIX/include/KokkosCore_config.h"
     if ! test -r "$KOKKOS_CFG"
@@ -41201,7 +41203,8 @@ then :
   as_fn_error $? "nvcc not found. Install CUDA." "$LINENO" 5
 fi
         KOKKOS_CXX="$NVCC"
-        KOKKOS_CXXFLAGS="--forward-unknown-to-host-compiler -x cu $KOKKOS_CXXFLAGS"
+        KOKKOS_SOURCE_LANG="cu"
+        KOKKOS_CXXFLAGS="--forward-unknown-to-host-compiler $KOKKOS_CXXFLAGS"
         KOKKOS_LDFLAGS="--forward-unknown-to-host-compiler $KOKKOS_LDFLAGS"
 
 
@@ -41299,6 +41302,7 @@ then :
   as_fn_error $? "hipcc not found; install ROCm HIP." "$LINENO" 5
 fi
         KOKKOS_CXX="$HIPCC"
+        KOKKOS_SOURCE_LANG="hip"
         KOKKOS_CXXFLAGS="--forward-unknown-to-host-compiler $KOKKOS_CXXFLAGS"
         KOKKOS_LDFLAGS="--forward-unknown-to-host-compiler $KOKKOS_LDFLAGS"
         ;;
@@ -41375,6 +41379,7 @@ else case e in #(
     KOKKOS_CXXFLAGS=""
     KOKKOS_LDFLAGS=""
     KOKKOS_LIBS=""
+    KOKKOS_SOURCE_LANG=""
    ;;
 esac
 fi
@@ -42340,7 +42345,7 @@ printf "%s\n" "#define HAVE_TIMPI 1" >>confdefs.h
 
 printf "%s\n" "#define HAVE_TIMPI_LIB 1" >>confdefs.h
 
-        TIMPI_CPPFLAGS=""
+        TIMPI_CPPFLAGS="-I$TIMPI_PREFIX/src/algorithms/include -I$TIMPI_PREFIX/src/parallel/include -I$TIMPI_PREFIX/src/utilities/include $TIMPI_CPPFLAGS"
 
         TIMPI_LIBS="-ltimpi_$timpi_method"
 

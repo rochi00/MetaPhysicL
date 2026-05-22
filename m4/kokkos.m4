@@ -18,6 +18,7 @@ AC_DEFUN([CONFIGURE_KOKKOS],
     KOKKOS_CPPFLAGS="-DMETAPHYSICL_KOKKOS_COMPILATION -I$KOKKOS_PREFIX/include"
     KOKKOS_LDFLAGS="-L$KOKKOS_PREFIX/lib -Wl,-rpath,$KOKKOS_PREFIX/lib"
     KOKKOS_LIBS="-lkokkoscore"
+    KOKKOS_SOURCE_LANG="c++"
 
     KOKKOS_CFG="$KOKKOS_PREFIX/include/KokkosCore_config.h"
     AS_IF([! test -r "$KOKKOS_CFG"], [
@@ -57,7 +58,8 @@ AC_DEFUN([CONFIGURE_KOKKOS],
         AS_IF([test "x$NVCC" = "xno"],
           [AC_MSG_ERROR([nvcc not found. Install CUDA.])])
         KOKKOS_CXX="$NVCC"
-        KOKKOS_CXXFLAGS="--forward-unknown-to-host-compiler -x cu $KOKKOS_CXXFLAGS"
+        KOKKOS_SOURCE_LANG="cu"
+        KOKKOS_CXXFLAGS="--forward-unknown-to-host-compiler $KOKKOS_CXXFLAGS"
         KOKKOS_LDFLAGS="--forward-unknown-to-host-compiler $KOKKOS_LDFLAGS"
 
         dnl
@@ -114,6 +116,7 @@ AC_DEFUN([CONFIGURE_KOKKOS],
         AS_IF([test "x$HIPCC" = "xno"],
           [AC_MSG_ERROR([hipcc not found; install ROCm HIP.])])
         KOKKOS_CXX="$HIPCC"
+        KOKKOS_SOURCE_LANG="hip"
         KOKKOS_CXXFLAGS="--forward-unknown-to-host-compiler $KOKKOS_CXXFLAGS"
         KOKKOS_LDFLAGS="--forward-unknown-to-host-compiler $KOKKOS_LDFLAGS"
         ;;
@@ -140,6 +143,7 @@ AC_DEFUN([CONFIGURE_KOKKOS],
     KOKKOS_CXXFLAGS=""
     KOKKOS_LDFLAGS=""
     KOKKOS_LIBS=""
+    KOKKOS_SOURCE_LANG=""
   ])
 
 
@@ -148,6 +152,7 @@ AC_DEFUN([CONFIGURE_KOKKOS],
   AC_SUBST([KOKKOS_LIBS])
   AC_SUBST([KOKKOS_CPPFLAGS])
   AC_SUBST([KOKKOS_LDFLAGS])
+  AC_SUBST([KOKKOS_SOURCE_LANG])
 
   AM_CONDITIONAL([KOKKOS_ENABLED], [test "x$KOKKOS_CXX" != "x"])
 ])

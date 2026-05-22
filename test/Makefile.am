@@ -172,7 +172,7 @@ kokkos_sparse_derivs_unit_LDADD    = $(KOKKOS_LIBS) $(LIBS)
 	$(KOKKOS_CXX) \
 	  $(kokkos_sparse_derivs_unit_CPPFLAGS) \
 	  $(kokkos_sparse_derivs_unit_CXXFLAGS) \
-	  -x c++ \
+	  -x $(KOKKOS_SOURCE_LANG) \
 	  -c $< -o $@
 
 # Force this target’s link step to use the Kokkos compiler/wrapper
