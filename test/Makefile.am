@@ -170,8 +170,9 @@ kokkos_sparse_derivs_unit_LDADD    = $(KOKKOS_LIBS) $(LIBS)
 
 .K.o:
 	$(KOKKOS_CXX) \
-	  $(kokkos_sparse_derivs_unit_CPPFLAGS) \
-	  $(kokkos_sparse_derivs_unit_CXXFLAGS) \
+	  $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	  $(kokkos_sparse_derivs_unit_CPPFLAGS) $(CPPFLAGS) \
+	  $(kokkos_sparse_derivs_unit_CXXFLAGS) $(CXXFLAGS) \
 	  -x $(KOKKOS_SOURCE_LANG) \
 	  -c $< -o $@
 
